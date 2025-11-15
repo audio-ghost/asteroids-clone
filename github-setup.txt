@@ -1,0 +1,95 @@
+🎮 Godot + GitHub (SSH) Setup Guide
+
+For new Godot projects based on the template
+
+This guide walks you through creating a new GitHub repo, connecting it via SSH,
+committing inside Godot, and pushing the project.
+
+================================================================================
+
+🚀 1. Create a new GitHub repository
+	1.	Go to GitHub → New Repository
+	2.	Do NOT initialize with README, .gitignore, or license
+	3.	Copy the repo’s SSH URL, e.g.:
+			git@github.com:USERNAME/PROJECT.git
+			git@github.com:audio-ghost/godot-project-template.git
+
+================================================================================
+
+🗂 2. Initialize Git in the Godot project folder
+
+Open Terminal in your project folder:
+
+git init
+git remote add origin git@github.com:USERNAME/PROJECT.git
+
+Replace the SSH URL with the one copied from the repository
+================================================================================
+
+🔐 3. Ensure SSH keys are loaded (macOS)
+
+(This should already be configured in this project template)
+Check if your SSH key is active:
+
+ssh-add -l
+
+If your key does not appear:
+
+ssh-add ~/.ssh/id_ed25519
+
+Your system should automatically load keys into ssh-agent after the first time.
+
+================================================================================
+
+🔧 4. Configure Godot’s Git plugin
+
+(These should already be configured in this project template)
+Inside Godot:
+
+Project → Tools → Version Control → Configure…
+	•	Provider: Git (godot-git-plugin)
+	•	Auth Type: SSH
+	•	Username: your GitHub username
+	•	SSH Public Key:
+			~/.ssh/id_ed25519.pub
+	•	SSH Private Key:
+			~/.ssh/id_ed25519
+	•	Passphrase: (leave blank unless your key has one)
+
+Click Initialize if prompted.
+
+================================================================================
+
+💾 5. Commit inside Godot
+
+Open the Version Control panel:
+	1.	Stage All
+	2.	Write a commit message
+	3.	Commit
+
+================================================================================
+
+📤 6. Push to GitHub
+
+In the Version Control panel:
+	•	Click Push
+
+If configured correctly, your push will succeed.
+
+================================================================================
+
+🩹 7. If push fails because repo is empty
+
+GitHub sometimes requires a first commit from the terminal:
+
+git add .
+git commit -m "Initial commit"
+git push -u origin main
+
+After that, Godot will push normally.
+================================================================================
+
+✔️ Done!
+
+Your new Godot project is now version-controlled and linked to GitHub through
+SSH.
