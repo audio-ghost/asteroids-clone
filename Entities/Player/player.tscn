@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://bicwhhmbrkbf6"]
+
+[ext_resource type="Script" uid="uid://b4smnaellr5md" path="res://Entities/Player/player.gd" id="1_mv1ah"]
+
+[node name="Player" type="CharacterBody2D"]
+motion_mode = 1
+script = ExtResource("1_mv1ah")
+rotation_speed = 200.0
+
+[node name="PlayerShip" type="CollisionPolygon2D" parent="."]
+position = Vector2(-8, 8)
+polygon = PackedVector2Array(0, 0, 8, -25, 16, 0)
+
+[node name="Hitbox" type="Polygon2D" parent="."]
+position = Vector2(-8, 8)
+polygon = PackedVector2Array(0, 0, 8, -25, 16, 0, 12.5660515, 0)
