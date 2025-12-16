@@ -7,10 +7,14 @@ motion_mode = 1
 script = ExtResource("1_mv1ah")
 rotation_speed = 200.0
 
-[node name="PlayerShip" type="CollisionPolygon2D" parent="."]
+[node name="Hitbox" type="CollisionPolygon2D" parent="."]
 position = Vector2(-8, 8)
 polygon = PackedVector2Array(0, 0, 8, -25, 16, 0)
 
-[node name="Hitbox" type="Polygon2D" parent="."]
+[node name="ShipVisual" type="Polygon2D" parent="."]
 position = Vector2(-8, 8)
 polygon = PackedVector2Array(0, 0, 8, -25, 16, 0, 12.5660515, 0)
+
+[node name="FireBulletTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="FireBulletTimer" to="." method="_on_fire_bullet_timer_timeout"]
