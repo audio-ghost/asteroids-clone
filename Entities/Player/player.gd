@@ -1,4 +1,4 @@
-extends CharacterBody2D
+class_name Player extends CharacterBody2D
 
 var BULLET_SCENE = preload("res://Entities/Bullet/bullet.tscn")
 
