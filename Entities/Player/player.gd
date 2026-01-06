@@ -13,10 +13,12 @@ var can_fire = true
 
 @onready var starting_position = global_position
 @onready var fire_bullet_timer: Timer = $FireBulletTimer
+@onready var sprite: Polygon2D = $Sprite
+@onready var hurtbox: Area2D = $Hurtbox
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass
+	add_to_group(GameConstants.GROUP_PLAYER)
+	hurtbox.area_entered.connect(_on_hurtbox_area_entered)
 
 func _physics_process(delta: float) -> void:
 	apply_rotation(delta)
@@ -50,9 +52,15 @@ func fire_bullet() -> void:
 func _on_fire_bullet_timer_timeout() -> void:
 	can_fire = true
 
-func _on_ship_collider_body_entered(body) -> void:
-	if body is PhysicsBody2D:
-		handle_crash()
+func _on_hurtbox_area_entered(area):
+	if area.is_in_group(GameConstants.GROUP_ASTEROID_HITBOX):
+		die_and_respawn()
+
+func die_and_respawn():
+	velocity = Vector2.ZERO
+	rotation = 0
+	global_position = get_viewport_rect().size / 2
 	
-func handle_crash():
-	pass
+	sprite.modulate = Color(1, 0, 0)
+	await get_tree().create_timer(0.2).timeout
+	sprite.modulate = Color(1, 1, 1)

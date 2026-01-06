@@ -3,10 +3,18 @@
 [ext_resource type="Script" uid="uid://brb2e3o0t2y06" path="res://Entities/Asteroid/asteroid.gd" id="1_okjbv"]
 
 [node name="Asteroid" type="CharacterBody2D"]
+collision_layer = 4
 script = ExtResource("1_okjbv")
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+[node name="Sprite" type="Polygon2D" parent="."]
 polygon = PackedVector2Array(1, -26, 10, -22, 23, -21, 29, -14, 24, -4, 28, 12, 25, 20, 11, 27, 2, 20, -12, 17, -21, 21, -35, 7, -27, -3, -23, -17, -10, -28, -3, -20)
 
-[node name="Polygon2D" type="Polygon2D" parent="."]
+[node name="Body" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(1, -26, 10, -22, 23, -21, 29, -14, 24, -4, 28, 12, 25, 20, 11, 27, 2, 20, -12, 17, -21, 21, -35, 7, -27, -3, -23, -17, -10, -28, -3, -20)
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 40
+
+[node name="HitboxShape" type="CollisionPolygon2D" parent="Hitbox"]
 polygon = PackedVector2Array(1, -26, 10, -22, 23, -21, 29, -14, 24, -4, 28, 12, 25, 20, 11, 27, 2, 20, -12, 17, -21, 21, -35, 7, -27, -3, -23, -17, -10, -28, -3, -20)

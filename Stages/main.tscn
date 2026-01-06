@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://dt5vym0sxfp2c"]
+
+[ext_resource type="Script" uid="uid://3a86dq4hvlic" path="res://Stages/main.gd" id="1_lxwtg"]
+[ext_resource type="PackedScene" uid="uid://bicwhhmbrkbf6" path="res://Entities/Player/player.tscn" id="2_dqdwq"]
+[ext_resource type="PackedScene" uid="uid://byqiyvh6j6nx6" path="res://Entities/Asteroid/asteroid.tscn" id="3_dqdwq"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_lxwtg")
+player_scene = ExtResource("2_dqdwq")
+asteroid_scene = ExtResource("3_dqdwq")
+
+[node name="Asteroids" type="Node2D" parent="."]
+
+[node name="Projectiles" type="Node2D" parent="."]
