@@ -24,6 +24,7 @@ const SIZE_RADIUS := {
 @export var rotation_speed := 0.0
 
 signal request_spawn(size: AsteroidSize, position: Vector2)
+signal destroyed
 
 @onready var sprite: Polygon2D = $Sprite
 @onready var body: CollisionPolygon2D = $Body
@@ -33,7 +34,7 @@ signal request_spawn(size: AsteroidSize, position: Vector2)
 func _ready() -> void:
 	add_to_group(GameConstants.GROUP_ASTEROIDS)
 	hitbox.add_to_group(GameConstants.GROUP_ASTEROID_HITBOX)
-	initialize(Vector2.ZERO)
+	initialize(AsteroidSize.LARGE, Vector2.ZERO)
 	hitbox.area_entered.connect(_on_hitbox_area_entered)
 
 func _physics_process(delta: float) -> void:
@@ -41,9 +42,9 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	ScreenWrap.wrap(self)
 
-func initialize(start_position: Vector2) -> void:
+func initialize(init_size: AsteroidSize, start_position: Vector2) -> void:
 	global_position = start_position
-	
+	size = init_size
 	var dir = Vector2.RIGHT.rotated(randf() * TAU)
 	var s_range = SPEED_RANGES[size]
 	var speed = randf_range(s_range.x, s_range.y)
@@ -88,6 +89,7 @@ func _spawn_children_and_free():
 			spawn_children(AsteroidSize.SMALL, randi_range(0, 2))
 		AsteroidSize.MEDIUM:
 			spawn_children(AsteroidSize.SMALL, randi_range(3, 4))
+	emit_signal("destroyed")
 	queue_free()
 
 func spawn_children(child_size: AsteroidSize, count: int):
