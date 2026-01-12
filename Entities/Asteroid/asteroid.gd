@@ -89,7 +89,7 @@ func _spawn_children_and_free():
 			spawn_children(AsteroidSize.SMALL, randi_range(0, 2))
 		AsteroidSize.MEDIUM:
 			spawn_children(AsteroidSize.SMALL, randi_range(3, 4))
-	emit_signal("destroyed")
+	emit_signal("destroyed", size)
 	queue_free()
 
 func spawn_children(child_size: AsteroidSize, count: int):

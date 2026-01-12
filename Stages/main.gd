@@ -4,13 +4,14 @@ extends Node2D
 @export var asteroid_scene: PackedScene
 
 @onready var asteroids: Node2D = $Asteroids
-@onready var ui: CanvasLayer = $UI
-@onready var wave_label: Label = $"UI/Wave Label"
+@onready var wave_label: Label = $UI/WaveLabel
+@onready var score_label: Label = $UI/ScoreLabel
 
 var player: Node2D
 var current_wave := 1
 var asteroids_remaining := 0
 var is_wave_starting := false
+var score := 0
 
 func _ready() -> void:
 	spawn_player()
@@ -76,7 +77,15 @@ func get_offscreen_velocity_direction(pos: Vector2) -> Vector2:
 	var angle_variance = deg_to_rad(25)
 	return direction.rotated(randf_range(-angle_variance, angle_variance))
 
-func _on_asteroid_destroyed():
+func _on_asteroid_destroyed(size: Asteroid.AsteroidSize):
+	match size:
+		Asteroid.AsteroidSize.LARGE:
+			score += 20
+		Asteroid.AsteroidSize.MEDIUM:
+			score += 30
+		Asteroid.AsteroidSize.SMALL:
+			score += 50
+	score_label.text = "%d" % score
 	asteroids_remaining -= 1
 	if asteroids_remaining <= 0:
 		call_deferred("wave_complete")
