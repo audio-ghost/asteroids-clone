@@ -9,7 +9,11 @@ var BULLET_SCENE = preload("res://Entities/Bullet/bullet.tscn")
 @export var use_drag := true
 @export var fire_rate := 0.25
 
-var can_fire = true
+signal player_death(lives: int)
+signal game_over
+
+var can_fire := true
+var lives := 3
 
 @onready var starting_position = global_position
 @onready var fire_bullet_timer: Timer = $FireBulletTimer
@@ -58,9 +62,18 @@ func _on_fire_bullet_timer_timeout() -> void:
 
 func _on_hurtbox_area_entered(area):
 	if area.is_in_group(GameConstants.GROUP_ASTEROID_HITBOX):
-		die_and_respawn()
+		die()
 
-func die_and_respawn():
+func die():
+	lives -= 1
+	emit_signal("player_death", lives)
+	if lives > 0:
+		respawn()
+	else:
+		emit_signal("game_over")
+		queue_free()
+
+func respawn():
 	velocity = Vector2.ZERO
 	rotation = 0
 	global_position = get_viewport_rect().size / 2

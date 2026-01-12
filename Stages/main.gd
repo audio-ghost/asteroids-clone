@@ -6,6 +6,7 @@ extends Node2D
 @onready var asteroids: Node2D = $Asteroids
 @onready var wave_label: Label = $UI/WaveLabel
 @onready var score_label: Label = $UI/ScoreLabel
+@onready var lives_label: Label = $UI/LivesLabel
 
 var player: Node2D
 var current_wave := 1
@@ -21,6 +22,8 @@ func spawn_player():
 	player = player_scene.instantiate()
 	player.global_position = get_viewport_rect().size / 2
 	add_child(player)
+	player.player_death.connect(_on_player_death)
+	player.game_over.connect(_on_game_over)
 
 func spawn_child_asteroid(size: Asteroid.AsteroidSize, pos: Vector2):
 	var dir = Vector2.RIGHT.rotated(randf() * TAU)
@@ -98,3 +101,10 @@ func wave_complete():
 	await get_tree().create_timer(1).timeout
 	current_wave += 1
 	start_wave()
+
+func _on_player_death(lives: int):
+	lives_label.text = "LIVES: %d" % lives
+
+func _on_game_over():
+	wave_label.text = "GAME OVER"
+	wave_label.visible = true
