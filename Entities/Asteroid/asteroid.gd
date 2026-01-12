@@ -30,28 +30,28 @@ signal destroyed
 @onready var body: CollisionPolygon2D = $Body
 @onready var hitbox: Area2D = $Hitbox
 @onready var hitbox_shape: CollisionPolygon2D = $Hitbox/HitboxShape
+@onready var visible_on_screen_notifier_2d: VisibleOnScreenNotifier2D = $VisibleOnScreenNotifier2D
+
+var allow_screen_wrap := true
 
 func _ready() -> void:
 	add_to_group(GameConstants.GROUP_ASTEROIDS)
 	hitbox.add_to_group(GameConstants.GROUP_ASTEROID_HITBOX)
-	initialize(AsteroidSize.LARGE, Vector2.ZERO)
 	hitbox.area_entered.connect(_on_hitbox_area_entered)
 
 func _physics_process(delta: float) -> void:
 	rotation += rotation_speed * delta
 	move_and_slide()
-	ScreenWrap.wrap(self)
+	if allow_screen_wrap:
+		ScreenWrap.wrap(self)
 
-func initialize(init_size: AsteroidSize, start_position: Vector2) -> void:
+func initialize(init_size: AsteroidSize, start_position: Vector2, dir: Vector2) -> void:
 	global_position = start_position
 	size = init_size
-	var dir = Vector2.RIGHT.rotated(randf() * TAU)
 	var s_range = SPEED_RANGES[size]
 	var speed = randf_range(s_range.x, s_range.y)
 	velocity = speed * dir
-	
 	rotation_speed = randf_range(-2.0, 2.0)
-	
 	generate_shape()
 
 func generate_shape():
@@ -95,3 +95,8 @@ func _spawn_children_and_free():
 func spawn_children(child_size: AsteroidSize, count: int):
 	for i in count:
 		emit_signal("request_spawn", child_size, global_position)
+
+func _on_visible_on_screen_notifier_2d_screen_entered() -> void:
+	await get_tree().create_timer(2).timeout
+	allow_screen_wrap = true
+	visible_on_screen_notifier_2d.queue_free()

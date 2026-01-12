@@ -21,6 +21,10 @@ func _ready() -> void:
 	hurtbox.area_entered.connect(_on_hurtbox_area_entered)
 
 func _physics_process(delta: float) -> void:
+	# Replace with proper pause logic when global pause state is created
+	if get_parent().is_wave_starting:
+		return
+	
 	apply_rotation(delta)
 	handle_acceleration(delta)
 	if Input.is_action_just_pressed(("fire_projectile")) and can_fire:
