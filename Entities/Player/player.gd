@@ -14,11 +14,14 @@ signal game_over
 
 var can_fire := true
 var lives := 3
+var invincible := false
+var flash_timer
 
 @onready var starting_position = global_position
 @onready var fire_bullet_timer: Timer = $FireBulletTimer
 @onready var sprite: Polygon2D = $Sprite
 @onready var hurtbox: Area2D = $Hurtbox
+@onready var blink_timer: Timer = $BlinkTimer
 
 func _ready() -> void:
 	add_to_group(GameConstants.GROUP_PLAYER)
@@ -61,6 +64,8 @@ func _on_fire_bullet_timer_timeout() -> void:
 	can_fire = true
 
 func _on_hurtbox_area_entered(area):
+	if invincible:
+		return
 	if area.is_in_group(GameConstants.GROUP_ASTEROID_HITBOX):
 		die()
 
@@ -74,6 +79,7 @@ func die():
 		queue_free()
 
 func respawn():
+	start_invincibility()
 	velocity = Vector2.ZERO
 	rotation = 0
 	global_position = get_viewport_rect().size / 2
@@ -81,3 +87,17 @@ func respawn():
 	sprite.modulate = Color(1, 0, 0)
 	await get_tree().create_timer(0.2).timeout
 	sprite.modulate = Color(1, 1, 1)
+	await get_tree().create_timer(2).timeout
+	invincible = false
+
+func start_invincibility(duration: float = 2.0):
+	invincible = true
+	visible = true
+	blink_timer.start()
+	await get_tree().create_timer(duration).timeout
+	invincible = false
+	blink_timer.stop()
+	visible = true
+
+func _on_blink_timer_timeout() -> void:
+	visible = !visible

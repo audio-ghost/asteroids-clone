@@ -25,4 +25,8 @@ collision_mask = 16
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Hurtbox"]
 polygon = PackedVector2Array(0, -17, 8, 8, -8, 8)
 
+[node name="BlinkTimer" type="Timer" parent="."]
+wait_time = 0.2
+
 [connection signal="timeout" from="FireBulletTimer" to="." method="_on_fire_bullet_timer_timeout"]
+[connection signal="timeout" from="BlinkTimer" to="." method="_on_blink_timer_timeout"]
