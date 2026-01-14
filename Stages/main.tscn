@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://dt5vym0sxfp2c"]
+[gd_scene load_steps=8 format=3 uid="uid://dt5vym0sxfp2c"]
 
 [ext_resource type="Script" uid="uid://3a86dq4hvlic" path="res://Stages/main.gd" id="1_lxwtg"]
 [ext_resource type="PackedScene" uid="uid://bicwhhmbrkbf6" path="res://Entities/Player/player.tscn" id="2_dqdwq"]
 [ext_resource type="PackedScene" uid="uid://byqiyvh6j6nx6" path="res://Entities/Asteroid/asteroid.tscn" id="3_dqdwq"]
+[ext_resource type="PackedScene" uid="uid://b20pi33j48r0w" path="res://Stages/UI/game_over_ui.tscn" id="4_74i4i"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_dqdwq"]
 font_size = 48
@@ -58,3 +59,6 @@ offset_right = 147.0
 offset_bottom = 50.0
 text = "LIVES: 3"
 label_settings = SubResource("LabelSettings_n1pa2")
+
+[node name="GameOverUI" parent="." instance=ExtResource("4_74i4i")]
+visible = false

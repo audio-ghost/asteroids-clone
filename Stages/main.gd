@@ -4,10 +4,18 @@ extends Node2D
 @export var asteroid_scene: PackedScene
 
 @onready var asteroids: Node2D = $Asteroids
+@onready var ui: CanvasLayer = $UI
 @onready var wave_label: Label = $UI/WaveLabel
 @onready var score_label: Label = $UI/ScoreLabel
 @onready var lives_label: Label = $UI/LivesLabel
+@onready var game_over_ui: CanvasLayer = $GameOverUI
 
+enum GameState {
+	PLAYING,
+	GAME_OVER
+}
+
+var game_state := GameState.PLAYING
 var player: Node2D
 var current_wave := 1
 var asteroids_remaining := 0
@@ -106,5 +114,7 @@ func _on_player_death(lives: int):
 	lives_label.text = "LIVES: %d" % lives
 
 func _on_game_over():
-	wave_label.text = "GAME OVER"
-	wave_label.visible = true
+	game_state = GameState.GAME_OVER
+	get_tree().paused = true
+	game_over_ui.show()
+	game_over_ui.set_score(score)
