@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Asteroids Clone"
-run/main_scene="uid://dt5vym0sxfp2c"
+run/main_scene="uid://6rlr4485ac46"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
